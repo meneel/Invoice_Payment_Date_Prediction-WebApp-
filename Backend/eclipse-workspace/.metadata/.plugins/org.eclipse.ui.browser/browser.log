@@ -1,0 +1,9 @@
+
+Mar 29, 2022 21:53:17.522 NEW SESSION
+Mar 29, 2022 21:53:17.522 [6324:6432:0329/215317.520:ERROR:assistance_home_client.cc(23)] File path C:\Users\Indraneel Dutta\AppData\Local\Microsoft\Edge\User Data\Default
+Mar 29, 2022 21:53:20.848 [6324:6432:0329/215320.847:ERROR:device_event_log_impl.cc(214)] [21:53:20.848] USB: usb_device_handle_win.cc:1049 Failed to read descriptor from node connection: A device attached to the system is not functioning. (0x1F)
+Mar 29, 2022 21:53:20.848 [6324:6432:0329/215320.847:ERROR:device_event_log_impl.cc(214)] [21:53:20.848] USB: usb_device_handle_win.cc:1049 Failed to read descriptor from node connection: A device attached to the system is not functioning. (0x1F)
+Mar 29, 2022 21:57:56.342 [6324:6432:0329/215756.342:ERROR:interface_endpoint_client.cc(659)] Message 2 rejected by interface blink.mojom.WidgetHost
+Mar 29, 2022 22:01:24.812 [6324:6432:0329/220124.812:ERROR:fallback_task_provider.cc(124)] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.
+Mar 29, 2022 22:03:41.449 [6324:6432:0329/220341.449:ERROR:fallback_task_provider.cc(124)] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.
+Mar 29, 2022 22:04:05.287 [6324:6432:0329/220405.287:ERROR:fallback_task_provider.cc(124)] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.

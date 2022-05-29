@@ -1,0 +1,180 @@
+package com.webapp.dao;
+import java.sql.Connection;
+import java.sql.*;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import com.webapp.bean.models;
+
+//provides CRUD database operations to the database table
+public class webappDao {
+	
+	public static Connection connection;
+	
+	static final String jdbc_driver = "com.mysql.jdbc.Driver";
+	static final String jdbcURL = "JDBC:mysql://localhost/grey_goose?zeroDateTimeBehavior=convertToNull";
+	static final String jdbcUsername = "root";
+	static final String jdbcPassword = "PHOENIX10";
+	
+	public static final String INSERT_USERS_SQL = "INSERT INTO winter_internship (business_code,cust_number,clear_date,buisness_year,doc_id,posting_date, document_create_date,due_in_date,invoice_currency, document_type,posting_id, total_open_amount,baseline_create_date,cust_payment_terms,invoice_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+	
+	public static final String SELECT_BY_SL_NO = "select * from winter_internship where sl_no=?;";
+	public static final String SELECT_ALL = "select * from winter_internship;";
+	public static final String UPDATE_SQL = "update winter_internship set invoice_currency=?, cust_payment_terms=? where sl_no=?; ";
+	public static final String DELETE_SQL = "delete from winter_internship where sl_no=?; ";
+	
+	public Connection getConnection() {
+		
+		try {
+	
+			Class.forName(jdbc_driver);
+	        connection = DriverManager.getConnection(jdbcURL,jdbcUsername, jdbcPassword);
+	
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	    }
+		return connection;
+	}
+	
+	//insert data
+	public HashMap<Object,Object> insertdata(models models) throws SQLException {
+		HashMap<Object, Object> Response = new HashMap<Object, Object>();
+		try(Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)){
+				preparedStatement.setString(1, models.getBusiness_code());
+				preparedStatement.setInt(2, models.getCust_number());
+				preparedStatement.setDate(3, models.getClear_date());
+				preparedStatement.setInt(4, models.getBusiness_year());
+				preparedStatement.setString(5, models.getDoc_id());
+				preparedStatement.setDate(6, models.getPosting_date());
+				preparedStatement.setDate(7, models.getDocument_create_date());
+				preparedStatement.setDate(8, models.getDue_in_date());
+				preparedStatement.setString(9, models.getInvoice_currency());
+				preparedStatement.setString(10, models.getDocument_type());
+				preparedStatement.setInt(11, models.getPosting_id());
+				preparedStatement.setDouble(12, models.getTotal_open_amount());
+				preparedStatement.setDate(13, models.getBaseline_create_date());
+				preparedStatement.setString(14, models.getCust_payment_terms());
+				preparedStatement.setInt(15, models.getInvoice_id());
+				
+				if (preparedStatement.executeUpdate()> 0) {
+						Response.put("insert", true);
+				}else {
+					Response.put("insert", false);
+				}
+				
+				
+				
+				
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.print(Response);
+		return Response;
+	}
+	//select by SL_NO
+	public models select_by_sl_no(int sl_no) throws SQLException {
+		models models =null;
+		try(Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_SL_NO)){
+				preparedStatement.setInt(1, sl_no);
+				System.out.println(preparedStatement);
+				ResultSet rs = preparedStatement.executeQuery();
+				
+				while(rs.next()) {
+					 String business_code= rs.getString("business_code");
+					 int cust_number= rs.getInt("cust_number");
+					 Date clear_date= rs.getDate("clear_date");
+					 int buisness_year= rs.getInt("buisness_year");
+					 String doc_id= rs.getString("doc_id");
+					 Date posting_date= rs.getDate("posting_date");
+					 Date document_create_date= rs.getDate("document_create_date");
+					 Date document_create_date1= rs.getDate("document_create_date1");
+					 Date due_in_date= rs.getDate("due_in_date");
+					 String invoice_currency= rs.getString("invoice_currency");
+					 String document_type= rs.getString("document_type");
+					 int posting_id= rs.getInt("posting_id");
+					 String area_business= rs.getString("area_business");
+					 double total_open_amount= rs.getDouble("total_open_amount");
+					 Date baseline_create_date= rs.getDate("baseline_create_date");
+					 String cust_payment_terms= rs.getString("cust_payment_terms");
+					 int invoice_id= rs.getInt("invoice_id");
+					 boolean isOpen= rs.getBoolean("isOpen");
+					 String aging_bucket= rs.getString("aging_bucket");
+					 boolean is_deleted= rs.getBoolean("is_deleted");
+					 models = new models(sl_no,business_code,cust_number,clear_date,buisness_year,doc_id,posting_date,document_create_date,document_create_date1,due_in_date,invoice_currency,document_type,posting_id,area_business,total_open_amount,baseline_create_date,cust_payment_terms,invoice_id,isOpen,aging_bucket,is_deleted);
+			}
+		}catch (Exception e) { 
+			e.printStackTrace();
+		}
+		return models;
+		
+	}
+	//select *
+	public List<models> selectAll() throws SQLException {
+		List<models> models = new ArrayList<>();
+		try(Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL)){
+				System.out.println(preparedStatement);
+				ResultSet rs = preparedStatement.executeQuery();
+				
+				while(rs.next()) {
+					 int sl_no= rs.getInt("sl_no");
+					 String business_code= rs.getString("business_code");
+					 int cust_number= rs.getInt("cust_number");
+					 Date clear_date= rs.getDate("clear_date");
+					 int buisness_year= rs.getInt("buisness_year");
+					 String doc_id= rs.getString("doc_id");
+					 Date posting_date= rs.getDate("posting_date");
+					 Date document_create_date= rs.getDate("document_create_date");
+					 Date document_create_date1= rs.getDate("document_create_date1");
+					 Date due_in_date= rs.getDate("due_in_date");
+					 String invoice_currency= rs.getString("invoice_currency");
+					 String document_type= rs.getString("document_type");
+					 int posting_id= rs.getInt("posting_id");
+					 String area_business= rs.getString("area_business");
+					 double total_open_amount= rs.getDouble("total_open_amount");
+					 Date baseline_create_date= rs.getDate("baseline_create_date");
+					 String cust_payment_terms= rs.getString("cust_payment_terms");
+					 int invoice_id= rs.getInt("invoice_id");
+					 boolean isOpen= rs.getBoolean("isOpen");
+					 String aging_bucket= rs.getString("aging_bucket");
+					 boolean is_deleted= rs.getBoolean("is_deleted");
+					 models.add(new models(sl_no,business_code,cust_number,clear_date,buisness_year,doc_id,posting_date,document_create_date,document_create_date1,due_in_date,invoice_currency,document_type,posting_id,area_business,total_open_amount,baseline_create_date,cust_payment_terms,invoice_id,isOpen,aging_bucket,is_deleted));
+			}
+		}catch (Exception e) { 
+			e.printStackTrace();
+		}
+		return models;
+		
+	}
+	//update invoice_currency and cust_payment_terms
+	public boolean updatedata(models models) throws SQLException {
+		boolean rowUpdated;
+		try(Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(UPDATE_SQL)){
+				statement.setString(1, models.getInvoice_currency());
+				statement.setString(2, models.getCust_payment_terms());
+				statement.setInt(3, models.getSl_no());
+				
+				rowUpdated = statement.executeUpdate()> 0;
+				}
+		return rowUpdated;
+	}
+	//delete row based on SL_NO
+	public boolean delete_by_sl_no(int sl_no) throws SQLException {
+		boolean rowDeleted;
+		try(Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)){
+				preparedStatement.setInt(1, sl_no);
+				rowDeleted = preparedStatement.executeUpdate() >0;
+		}
+		return rowDeleted;
+	}	
+}

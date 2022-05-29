@@ -1,0 +1,73 @@
+package com.webapp.web;
+
+import jakarta.servlet.ServletException;
+
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import com.webapp.bean.models;
+import com.google.gson.Gson;
+import com.webapp.dao.webappDao;
+
+/**
+ * Servlet implementation class AddServlet
+ */
+public class AddServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private webappDao webappDao;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AddServlet() {
+    	this.webappDao = new webappDao();
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json");
+//		PrintWriter out = response.getWriter();
+		HashMap<Object, Object> Response = new HashMap<Object, Object>();
+		
+		String business_code = request.getParameter("business_code");
+		int cust_number = Integer.parseInt(request.getParameter("cust_number"));
+		Date clear_date = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("clear_date"));
+		int business_year = Integer.parseInt(request.getParameter("business_year"));
+		String doc_id = request.getParameter("doc_id");
+		Date posting_date = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("posting_date"));
+		Date document_create_date = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("document_create_date"));
+		Date due_in_date = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("due_in_date"));
+		String invoice_currency = request.getParameter("invoice_currency");
+		String document_type = request.getParameter("document_type");
+		int posting_id = Integer.parseInt(request.getParameter("posting_id"));
+		double total_open_amount = Double.parseDouble(request.getParameter("total_open_amount"));
+		Date baseline_create_date = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("baseline_create_date"));
+		String cust_payment_terms = request.getParameter("cust_payment_terms");
+		int invoice_id = Integer.parseInt(request.getParameter("invoice_id"));
+		
+		models newdata = new models(business_code,cust_number,clear_date,business_year,doc_id,
+				posting_date,document_create_date,due_in_date,invoice_currency,document_type,posting_id,total_open_amount,baseline_create_date,cust_payment_terms,invoice_id)
+
+		
+		
+		try {
+			Response.put("Data", webappDao.insertdata(newdata));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Gson gson = new Gson();
+		String jsonresponse = gson.toJson(Response);
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.getWriter().append(jsonresponse);
+	}
+
+}
